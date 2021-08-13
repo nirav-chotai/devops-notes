@@ -145,6 +145,8 @@ ui:
   enabled: true
   serviceType: NodePort
 ```
+The same config will be available at `/vault/config/extraconfig-from-values.hcl` inside Vault pods.
+
 [Google KMS Auto Unseal](https://www.vaultproject.io/docs/platform/k8s/helm/run#google-kms-auto-unseal) is used to auto unseal the vault.
 Also, checkout [Auto-unseal using GCP Cloud KMS](https://learn.hashicorp.com/tutorials/vault/autounseal-gcp-kms?in=vault/auto-unseal) using Terraform.
 
@@ -153,6 +155,8 @@ Helm Chart Configurations: https://www.vaultproject.io/docs/platform/k8s/helm/co
 Auto-unseal does not initialize Vault. When you run `vault operator init`, root token will be found there.
 
 ```yaml
+kubectl -n vault exec devops-vault-0 -- vault status
+
 kubectl -n vault exec devops-vault-0 -- vault operator init -recovery-shares=1 -recovery-threshold=1
 
 kubectl -n vault exec devops-vault-0 -- vault status
@@ -222,6 +226,8 @@ vault write auth/kubernetes/config \
         token_reviewer_jwt="$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)" \
         kubernetes_host="https://X.X.X.X:443" \
         kubernetes_ca_cert=@/var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+
+Success! Data written to: auth/kubernetes/config
 ```
 You can get `kubernetes_host` from `kubectl cluster-info`
 
@@ -254,8 +260,12 @@ Getting Accessor:
 - For K8s, it is `auth_kubernetes_4ee00d74`
 
 ```shell script
-/ $ vault auth list -detailed
-OR
+vault auth list -detailed
+# Explore the auth methods
+vault path-help auth/userpass
+vault path-help auth/ldap
+vault path-help auth/ldap/config
+
 / $ vault auth list
 Path           Type          Accessor                    Description
 ----           ----          --------                    -----------
@@ -268,6 +278,8 @@ userpass/      userpass      auth_userpass_f713c411      n/a
 
 Create secret engine with specific path for the team
 ```shell script
+vault secrets list
+vault secrets list -format=json
 vault secrets enable -path=devopsteam kv-v2
 ```
 Create a policy (for example creating below policy at /tmp/devopsteam.hcl)
@@ -366,6 +378,7 @@ id              873f7b12-dec8-c182-024e-e3f065d8a9f1
 
 vault write identity/group name=devopsteam member_entity_ids=631256b1-8523-9838-5501-d0a1e2cdad9c metadata=team="DEVOPSTEAM"
 vault login -method=userpass username=nirav password=XXX
+vault token lookup
 ```
 Also, login through Web UI and check the credentials.
 
@@ -626,8 +639,15 @@ path "sys/metrics*" {
 vault policy write prometheus /tmp/prometheus.hcl
 vault token create -policy=prometheus
 ```
+- [Prometheus Configuration](https://www.vaultproject.io/docs/configuration/telemetry#prometheus)
+- [Vault Telemetry](https://www.vaultproject.io/docs/internals/telemetry)
 
 # Agent Workflow
 ![Vault Agent Workflow](../imgs/vault-kubernetes-auth-workflow.png)
 
-
+# Learning Resources
+- [Getting-Started-Vault by Ned Bellavance](https://github.com/ned1313/Getting-Started-Vault)
+- [Managing-HashiCorp-Vault by Ned Bellavance](https://github.com/ned1313/Managing-HashiCorp-Vault)
+- [Vault Presentation](https://hashicorp.github.io/field-workshops-vault/slides/multi-cloud/vault-oss)
+- [Vault Workshop](https://play.instruqt.com/hashicorp/topics/vault-workshops)
+- [Hashicorp Playground](https://play.instruqt.com/hashicorp)
