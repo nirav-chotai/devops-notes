@@ -271,7 +271,7 @@ Create secret engine with specific path for the team
 vault secrets enable -path=devopsteam kv-v2
 ```
 Create a policy (for example creating below policy at /tmp/devopsteam.hcl)
-```json
+```shell script
 # List, create, read, and update key/value secrets
 path "secret/*" {
   capabilities = ["create", "read", "list", "update"]
@@ -372,7 +372,7 @@ Also, login through Web UI and check the credentials.
 ## Application Permissions
 
 We can write simple policy for an application as given below
-```json
+```shell script
 vault policy write myapp-kv-ro - <<EOF
 path "secret/data/myapp/*" {
     capabilities = ["read", "list"]
@@ -426,7 +426,7 @@ This is the Kubernetes Service Account name for the application.
 `app-name`: `identity.entity.aliases.<mount accessor>.metadata.service_account_name.` 
 
 Create a policy at `/tmp/devopsteam-app-policy.hcl`
-```json
+```shell script
 # This means that each service account can read/list secret in this path secrets/[namespace]/[service_account]/*
 
 path "devopsteam/data/{{identity.entity.aliases.auth_kubernetes_4ee00d74.metadata.service_account_namespace}}/{{identity.entity.aliases.auth_kubernetes_4ee00d74.metadata.service_account_name}}/*" {
@@ -467,7 +467,7 @@ The Vault Agent Injector only modifies a deployment if it contains a specific se
 https://www.vaultproject.io/docs/platform/k8s/injector/annotations
 
 Example:
-```json
+```shell script
 vault.hashicorp.com/agent-inject: "true"
 vault.hashicorp.com/agent-inject-status: "update"
 vault.hashicorp.com/agent-inject-secret-helloworld: "secrets/default/default/helloworld"
