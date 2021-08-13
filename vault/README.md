@@ -483,7 +483,7 @@ vault.hashicorp.com/agent-pre-populate-only: "true"
 > A common mistake is to set the annotation on the Deployment or other resource. Ensure that the injector annotations are specified on the pod specification when using higher level constructs such as deployments, jobs or statefulsets.
 
 If no template is provided the following generic template is used:
-```json
+```shell script
 {{ with secret "/path/to/secret" }}
     {{ range $k, $v := .Data }}
         {{ $k }}: {{ $v }}
