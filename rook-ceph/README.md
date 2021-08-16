@@ -90,4 +90,3 @@ libceph               311296  2 ceph,rbd
 
 Kernel requirements for CephFS:
 > If you will be creating volumes from a Ceph shared file system (CephFS), the recommended minimum kernel version is 4.17. If you have a kernel version less than 4.17, the requested PVC sizes will not be enforced. Storage quotas will only be enforced on newer kernels.
-
