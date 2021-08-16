@@ -60,7 +60,8 @@ In order to configure the Ceph storage cluster, at least one of these local stor
 
 You can confirm whether your partitions or devices are formatted filesystems with the following command.
 ```shell script
-lsblk -f
+# lsblk -f
+
 NAME                  FSTYPE      LABEL UUID                                   MOUNTPOINT
 vda
 └─vda1                LVM2_member       >eSO50t-GkUV-YKTH-WsGq-hNJY-eKNf-3i07IB
