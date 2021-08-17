@@ -156,7 +156,7 @@ Auto-unseal does not initialize Vault. When you run `vault operator init`, root 
 
 ```shell script
 (base) ➜  ~ kubectl get po -n vault
-NAME                                        READY   STATUS    RESTARTS   AGE
+NAME                                          READY    STATUS    RESTARTS   AGE
 devops-vault-0                                 1/1     Running   0          21d
 devops-vault-1                                 1/1     Running   0          14d
 devops-vault-2                                 1/1     Running   0          171d
