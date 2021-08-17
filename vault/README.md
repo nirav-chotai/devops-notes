@@ -154,11 +154,21 @@ Helm Chart Configurations: https://www.vaultproject.io/docs/platform/k8s/helm/co
 
 Auto-unseal does not initialize Vault. When you run `vault operator init`, root token will be found there.
 
-```yaml
+```shell script
+(base) ➜  ~ kubectl get po -n vault
+NAME                                        READY   STATUS    RESTARTS   AGE
+devops-vault-0                                 1/1     Running   0          21d
+devops-vault-1                                 1/1     Running   0          14d
+devops-vault-2                                 1/1     Running   0          171d
+devops-vault-agent-injector-57c58cccf9-m7fd4   1/1     Running   0          199d
+
+# Check the status
 kubectl -n vault exec devops-vault-0 -- vault status
 
+# Initialize the Vault
 kubectl -n vault exec devops-vault-0 -- vault operator init -recovery-shares=1 -recovery-threshold=1
 
+# Check the status
 kubectl -n vault exec devops-vault-0 -- vault status
 
 Key                      Value
