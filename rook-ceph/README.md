@@ -173,12 +173,10 @@ After installation, you'll see deployments of `mgr`, `mon`, `osd`, `rbdplugin`, 
 NAME                                            READY   UP-TO-DATE   AVAILABLE   AGE
 csi-cephfsplugin-provisioner                    2/2     2            2           267d
 csi-rbdplugin-provisioner                       2/2     2            2           351d
-rook-ceph-crashcollector-dps-jp2-k8s-prod-118   1/1     1            1           92d
-rook-ceph-crashcollector-dps-jp2-k8s-prod-121   1/1     1            1           92d
-rook-ceph-crashcollector-dps-jp2-k8s-prod-21    1/1     1            1           13d
-rook-ceph-crashcollector-dps-jp2-k8s-prod-22    1/1     1            1           13d
-rook-ceph-crashcollector-dps-jp2-k8s-prod-23    1/1     1            1           13d
-rook-ceph-crashcollector-dps-jp2-k8s-prod-24    1/1     1            1           13d
+rook-ceph-crashcollector-k8s-prod-21            1/1     1            1           13d
+rook-ceph-crashcollector-k8s-prod-22            1/1     1            1           13d
+rook-ceph-crashcollector-k8s-prod-23            1/1     1            1           13d
+rook-ceph-crashcollector-k8s-prod-24            1/1     1            1           13d
 rook-ceph-mgr-a                                 1/1     1            1           477d
 rook-ceph-mon-b                                 1/1     1            1           30h
 rook-ceph-mon-d                                 1/1     1            1           214d
