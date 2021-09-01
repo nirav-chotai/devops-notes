@@ -350,3 +350,14 @@ spec:
 References: 
 - https://rook.io/docs/rook/v1.7/ceph-osd-mgmt.html#purge-the-osd-from-the-ceph-cluster
 - https://github.com/rook/rook/blob/release-1.7/cluster/examples/kubernetes/ceph/osd-purge.yaml
+
+The operator can automatically remove OSD deployments that are considered “safe-to-destroy” by Ceph. After the steps above, the OSD will be considered safe to remove since the data has all been moved to other OSDs. But this will only be done automatically by the operator if you have this setting in the cluster CR:
+```shell script
+removeOSDsIfOutAndSafeToRemove: true
+```
+> OSDs can be removed automatically with the current mechanism if a new
+setting removeOSDsIfOutAndSafeToRemove is set to true. The default for
+all new or upgraded clusters should be false.
+
+Reference: https://github.com/rook/rook/commit/7f9611d48934d064de5eb3a261d03fcf4bb6b727
+

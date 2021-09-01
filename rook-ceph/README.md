@@ -268,4 +268,24 @@ More detailed references:
 - [Object Storage](https://rook.io/docs/rook/v1.7/ceph-object.html) | [Ceph Object Store CRD](https://rook.io/docs/rook/v1.7/ceph-object-store-crd.html)
 - [Rook Toolbox](https://rook.io/docs/rook/v1.7/ceph-toolbox.html) | [Ceph Dashboard](https://rook.io/docs/rook/v1.7/ceph-dashboard.html)
 
+Ceph components:
+  - Ceph Monitor (min 3): maintains a map of the cluster state 
+  - Ceph Manager daemon: keep track of runtime metrics 
+  - Ceph OSDs (min 3): Object Storage Daemon, stores the data, maintain replication, recovery, rebalancing
+  - MDSs (Ceph Metadata Server): metadata for the Ceph FileSystem storage type (not for block/object storage type)
+  - RGWs: RADOS Gateway
+  - BlueStore is a new back-end object store for the OSD daemons. 
 
+Ceph object storage uses:
+  - CRUSH algorithm (Controlled Replication Under Scalable Hashing)
+  - RADOS - Reliable Autonomic Distributed Object Store 
+  - RESTful interface compatible with S3
+
+RBD:
+  - Ceph block storage is provided by Ceph's RADOS Block Device (RBD)
+  - RBD is built on top of the same Ceph Object Storage 
+  - Ceph stores the block images as objects in the object store
+
+Introduction to Rook: https://www.youtube.com/watch?v=pwVsFHy2EdE
+
+Deep Dive Rook: https://www.youtube.com/watch?v=Mb7oiXQb1ZE
