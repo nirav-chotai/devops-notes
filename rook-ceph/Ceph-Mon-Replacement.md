@@ -1,4 +1,8 @@
-# Identify the node
+# How to replace Ceph Monitor to run on another node in K8s 
+
+> Ceph Monitor (min 3): maintains a map of the cluster state 
+
+## Identify the node
 
 ```shell script
 (base) ➜  ~ kubectl -n rook-ceph get po -l app=rook-ceph-mon
@@ -14,7 +18,7 @@ rook-ceph-mon-d-68fb564797-hcxl4   1/1     Running   0          7d    192.168.18
 rook-ceph-mon-e-86874f78fc-rntkg   1/1     Running   0          47h   192.168.130.254   k8s-prod-22    <none>           <none>
 ```
 
-# Get and describe Mon ConfigMap
+## Get and describe Mon ConfigMap
 
 ```shell script
 (base) ➜  ~ kubectl -n rook-ceph get cm rook-ceph-mon-endpoints
@@ -44,7 +48,7 @@ csi-cluster-config-json:
 Events:  <none> 
 ```
 
-# Get the Mon Deployments
+## Get the Mon Deployments
 ```shell script
 (base) ➜  ~ kubectl -n rook-ceph get deploy -l app=rook-ceph-mon
 NAME              READY   UP-TO-DATE   AVAILABLE   AGE
@@ -53,7 +57,7 @@ rook-ceph-mon-d   1/1     1            1           214d
 rook-ceph-mon-e   1/1     1            1           47h
 ```
 
-# Edit the specific Mon ConfigMap
+## Edit the specific Mon ConfigMap
 ```shell script
 (base) ➜  ~ kubectl -n rook-ceph get cm rook-ceph-mon-endpoints -o yaml > rook-ceph-mon-endpoints-backup.yaml
 
@@ -61,12 +65,12 @@ rook-ceph-mon-e   1/1     1            1           47h
 ```
 Remove specific node entry from `mapping` section, and save the `ConfigMap`
 
-# Delete the Deployment
+## Delete the Deployment
 ```shell script
 (base) ➜  ~ kubectl -n rook-ceph delete deploy rook-ceph-mon-e
 ```
 
-# Verify the Mon Deployments
+## Verify the Mon Deployments
 ```shell script
 (base) ➜  ~ kubectl -n rook-ceph get deploy -l app=rook-ceph-mon
 NAME              READY   UP-TO-DATE   AVAILABLE   AGE

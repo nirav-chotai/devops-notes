@@ -240,7 +240,7 @@ rook-ceph   /var/lib/rook     3          477d   Ready   Cluster created successf
 
 (base) ➜  ~ kubectl get cephcluster -n rook-cephfs
 NAME          DATADIRHOSTPATH        MONCOUNT   AGE    PHASE   MESSAGE                        HEALTH
-rook-cephfs   /var/lib/rook-cephfs   3          266d   Ready   Cluster created successfully   HEALTH_OK(base) ➜  ~ 
+rook-cephfs   /var/lib/rook-cephfs   3          266d   Ready   Cluster created successfully   HEALTH_OK 
 ```
 
 The necessary system states for the rook-ceph can be portrayed as follows:
