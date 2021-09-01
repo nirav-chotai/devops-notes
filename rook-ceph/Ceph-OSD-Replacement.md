@@ -154,7 +154,7 @@ If removing an OSD only from the node, then ConfigMaps should be updated.
 # If removing an OSD only from the node, then first identify the OSD details from the host
 # Connect to the host, and running command like `lsblk`, gives more information about OSD device
 kubectl -n rook-ceph edit cm local-device-<NODE>
-# Example: kubectl -n rook-ceph edit cm local-device-dps-jp2-k8s-prod-04
+# Example: kubectl -n rook-ceph edit cm local-device-k8s-prod-04
 # Remove an entry of the OSD which is being removed.
 ```
 

@@ -38,7 +38,7 @@ data:
 d=10.X.X.X:6789,e=10.X.X.X:6789,b=10.X.X.X:6789
 mapping:
 ----
-{"node":{"b":{"Name":"k8s-prod-23","Hostname":"k8s-prod-23","Address":"100.99.168.11"},"d":{"Name":"k8s-prod-121","Hostname":"dps-jp2-k8s-prod-121","Address":"100.78.16.98"},"e":{"Name":"k8s-prod-22","Hostname":"k8s-prod-22","Address":"100.99.168.8"}}}
+{"node":{"b":{"Name":"k8s-prod-23","Hostname":"k8s-prod-23","Address":"100.99.168.11"},"d":{"Name":"k8s-prod-121","Hostname":"k8s-prod-121","Address":"100.78.16.98"},"e":{"Name":"k8s-prod-22","Hostname":"k8s-prod-22","Address":"100.99.168.8"}}}
 maxMonId:
 ----
 4
