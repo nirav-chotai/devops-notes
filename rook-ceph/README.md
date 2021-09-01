@@ -191,6 +191,12 @@ rook-ceph-osd-15                                1/1     1            1          
 rook-ceph-osd-4                                 1/1     1            1           13d
 rook-ceph-osd-9                                 1/1     1            1           13d
 rook-ceph-tools                                 1/1     1            1           477d
+
+(base) ➜  ~ kubectl get ds -n rook-ceph
+NAME               DESIRED   CURRENT   READY   UP-TO-DATE   AVAILABLE   NODE SELECTOR   AGE
+csi-cephfsplugin   142       142       142     142          142         <none>          267d
+csi-rbdplugin      142       142       142     142          142         <none>          352d
+rook-discover      142       142       142     142          142         <none>          352d
 ```
 Tools can be used to run any `Ceph` commands:
 ```shell script
@@ -234,8 +240,21 @@ rook-ceph   /var/lib/rook     3          477d   Ready   Cluster created successf
 
 (base) ➜  ~ kubectl get cephcluster -n rook-cephfs
 NAME          DATADIRHOSTPATH        MONCOUNT   AGE    PHASE   MESSAGE                        HEALTH
-rook-cephfs   /var/lib/rook-cephfs   3          266d   Ready   Cluster created successfully   HEALTH_OK
-(base) ➜  ~ 
+rook-cephfs   /var/lib/rook-cephfs   3          266d   Ready   Cluster created successfully   HEALTH_OK(base) ➜  ~ 
+```
+
+The necessary system states for the rook-ceph can be portrayed as follows:
+```shell script
+   Ignored 		: If any of the resources gets ignored for multiple reasons
+   Progressing 		: Marks the start of reconcile of Ceph Cluster
+   Ready 		: When Reconcile completes successfully
+   Not Ready 		: Either when cluster is Updated or Updating is blocked
+   Connecting		: When the Ceph Cluster is in the state of Connecting 
+   Connected		: When the Ceph Cluster gets connected
+   Available 		: The Ceph Cluster is healthy and is ready to use
+   Failure 		: If any failure occurs in the Ceph Cluster
+   Cluster Expanding	: If the Cluster is Expanding
+   Upgrading		: When the Cluster gets an Upgrade
 ```
 
 Ceph Cluster CRD Customization
