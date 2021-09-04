@@ -1,3 +1,16 @@
+# Alert: daemons have recently crashed
+
+```shell script
+ceph -s
+ceph health detail
+ceph crash ls-new
+ceph crash info <crash-id>
+ceph crash archive <crash-id>
+ceph crash archive-all
+```
+
+Reference: https://docs.ceph.com/en/latest/rados/operations/health-checks/#recent-crash
+
 # Removing the Cluster CRD
 
 Ceph Cluster deletion is stuck.
@@ -28,3 +41,15 @@ kubectl api-resources --verbs=list --namespaced -o name \
   | xargs -n 1 kubectl get --show-kind --ignore-not-found -n rook-ceph
 ```
 
+# Disk Cleanup
+
+```shell script
+# Disk Cleanup
+
+#!/usr/bin/env bash
+DISK="/dev/sdr"
+sgdisk --zap-all $DISK
+dd if=/dev/zero of="$DISK" bs=1M count=100 oflag=direct,dsync
+ls /dev/mapper/ceph--33bcb3d3--6c3e--4fd5--875d--eb612c864526-osd--data--d59a2a29--e412--4716--a82b--87c5c09b5a52 | xargs -I% -- dmsetup remove %
+rm -rf /dev/ceph-33bcb3d3-6c3e-4fd5-875d-eb612c864526
+```
