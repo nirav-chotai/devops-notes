@@ -1,0 +1,101 @@
+#!/usr/bin/env groovy
+
+@Library('jenkins-shared-libraries@v4.7') _
+
+pipeline {
+
+    agent any
+
+    options {
+        // Build auto timeout
+        timeout(time: 60, unit: 'MINUTES')
+    }
+
+    // Some global default variables
+    environment {
+        credId      = 'bitbucketK8S'
+        gitRepo     = 'ssh://git@git.devops.com:7999/devopsk8s/rook-ceph-cluster.git'
+        appName     = 'rook-ceph-cluster'
+        nameSpace   = 'rook-ceph'
+    }
+
+    parameters {
+        string (name: 'GIT_BRANCH', defaultValue: 'master',  description: 'Git Branch')
+        booleanParam(defaultValue: false, name: 'BUILD_IMAGE', description: 'Build and Push Docker Image')
+        booleanParam(defaultValue: true, name: 'BUILD_HELM', description: 'Build and Push Helm Chart')
+    }
+
+  stages {
+    stage('Build and Push Docker Image') {
+      when {
+         expression { params.BUILD_IMAGE == true }
+      }
+      steps {
+        kanikoBuildPush(imageName: "ceph/ceph", customTag: "v15.2.4-20200630") {
+            retry(3) {
+                checkout scm
+                git branch: "${params.GIT_BRANCH}",
+                    credentialsId: "${credId}",
+                    url: "${gitRepo}"
+            }
+        }
+      }
+    }
+    stage('Build and Push Helm Chart') {
+      when {
+         expression { params.BUILD_HELM == true }
+      }
+      steps {
+        helmBuildPush(appName: "${appName}") {
+            retry(3) {
+                checkout scm
+                git branch: "${params.GIT_BRANCH}",
+                    credentialsId: "${credId}",
+                    url: "${gitRepo}"
+            }
+        }
+      }
+    }
+    stage('Deploy Rook Ceph Cluster to Dev') {
+      steps {
+        onpremDeployToDev(appName: "${appName}", nameSpace: "${nameSpace}") {
+            retry(3) {
+                checkout scm
+                git branch: "${params.GIT_BRANCH}",
+                    credentialsId: "${credId}",
+                    url: "${gitRepo}"
+            }
+        }
+      }
+    }
+    stage('Approval for Production') {
+        steps {
+          sendNotification(message: "Job: <${env.RUN_DISPLAY_URL}|${env.JOB_NAME}> with buildnumber ${env.BUILD_NUMBER} Waiting for approval! Timeout in 30 Minutes") {
+          }          
+          script {
+            timeout(time: 30, unit: 'MINUTES') {
+                userInput = input(id: 'confirm', message: 'Please confirm to deploy to production.', parameters: [ [$class: 'BooleanParameterDefinition', defaultValue: false, description: 'Please confirm to deploy to production.', name: 'confirm'] ])
+            }
+          }
+        }
+    }
+    stage('Deploy Rook Ceph Cluster to Prod') {
+      steps {
+        onpremDeployToProd(appName: "${appName}", nameSpace: "${nameSpace}") {
+            retry(3) {
+                checkout scm
+                git branch: "${params.GIT_BRANCH}",
+                    credentialsId: "${credId}",
+                    url: "${gitRepo}"
+            }
+        }
+      }
+    }
+  }
+  post {
+    always {
+        sendNotification(buildResult: currentBuild.currentResult) {
+        }        
+    }
+  }
+}

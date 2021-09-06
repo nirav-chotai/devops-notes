@@ -1,0 +1,11 @@
+apiVersion: v2
+name: rook-ceph-operator
+description: Installs rook to create, configure, and manage Ceph clusters on Kubernetes.
+version: 2.0.0
+appVersion: v1.4.1
+sources:
+  - https://github.com/rook/rook
+maintainers:
+  - name: Nirav Chotai
+    email: niravchotai.ce@gmail.com
+icon: https://rook.io/images/rook-logo.svg

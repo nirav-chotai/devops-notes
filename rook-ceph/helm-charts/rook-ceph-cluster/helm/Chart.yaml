@@ -1,0 +1,13 @@
+apiVersion: v2
+name: rook-ceph-cluster
+description: File, Block, and Object Storage Services for your Cloud-Native Environment
+version: 2.0.0
+appVersion: 15.2.4
+sources:
+  - https://github.com/rook/rook
+  - https://rook.github.io/docs/rook/master/ceph-quickstart.html
+  - https://github.com/rook/rook/blob/master/cluster/examples/kubernetes/ceph/cluster.yaml
+maintainers:
+  - name: Nirav Chotai
+    email: niravchotai.ce@gmail.com
+icon: https://rook.io/images/rook-logo.svg

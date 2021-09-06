@@ -1,0 +1,32 @@
+resources:
+  limits:
+    cpu: 1
+    memory: 4Gi
+  requests:
+    cpu: 1
+    memory: 4Gi
+
+csi:
+  enableCephfsDriver: true
+  registrar:
+    image: quay.io/k8scsi/csi-node-driver-registrar:v2.0.1
+  pluginTolerations:
+     - key: role
+       operator: Equal
+       value: atlas
+       effect: NoSchedule
+     - key: dedicated
+       operator: Equal
+       value: internal
+       effect: NoSchedule
+
+discover:
+  tolerations:
+     - key: role
+       operator: Equal
+       value: atlas
+       effect: NoSchedule
+     - key: dedicated
+       operator: Equal
+       value: internal
+       effect: NoSchedule

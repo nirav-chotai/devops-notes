@@ -1,0 +1,65 @@
+apiVersion: ceph.rook.io/v1
+kind: CephCluster
+metadata:
+  name: {{ .Values.cluster.name }}
+  namespace: {{  .Release.Namespace }}
+spec:
+  cephVersion:
+    image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+    allowUnsupported: {{ .Values.allowUnsupported }}
+  dataDirHostPath: {{ .Values.dataDirHostPath }}
+  skipUpgradeChecks: {{ .Values.skipUpgradeChecks }}
+  continueUpgradeAfterChecksEvenIfNotHealthy: {{ .Values.continueUpgradeAfterChecksEvenIfNotHealthy }}
+  mon:
+    count: {{ .Values.mon.count }}
+    allowMultiplePerNode: {{ .Values.mon.allowMultiplePerNode }}
+  mgr:
+    modules:
+    - name: pg_autoscaler
+      enabled: {{ .Values.mgr.modules.pg_autoscaler.enabled }}
+  dashboard:
+    enabled: {{ .Values.dashboard.enabled }}
+    urlPrefix: {{ .Values.dashboard.urlPrefix }}
+    port: {{ .Values.dashboard.port }}
+    ssl: {{ .Values.dashboard.ssl }}
+  monitoring:
+    enabled: {{ .Values.monitoring.enabled }}
+    rulesNamespace: {{ .Values.monitoring.rulesNamespace }}
+  network:
+    provider: host
+  rbdMirroring:
+    workers: {{ .Values.rbdMirroring.workers }}
+  crashCollector:
+    disable: {{ .Values.crashCollector.disable }}
+  cleanupPolicy:
+    deleteDataDirOnHosts: ""
+  annotations:
+  resources:
+  removeOSDsIfOutAndSafeToRemove: {{ .Values.removeOSDsIfOutAndSafeToRemove }}
+  storage:
+    useAllNodes: {{ .Values.storage.useAllNodes }}
+    useAllDevices: {{ .Values.storage.useAllDevices }}
+    {{- if eq .Values.storage.env "prod" }}
+    nodes:
+    - name: "k8s-prod-21"
+      devices:
+      - name: "sdh"
+      - name: "sdi"
+    - name: "k8s-prod-22"
+      devices:
+      - name: "sdh"
+      - name: "sdi"
+    - name: "k8s-prod-23"
+      devices:
+      - name: "sdh"
+      - name: "sdi"
+    - name: "k8s-prod-24"
+      devices:
+      - name: "sdh"
+      - name: "sdi"
+    {{- end }}
+  disruptionManagement:
+    managePodBudgets: {{ .Values.disruptionManagement.managePodBudgets }}
+    osdMaintenanceTimeout: {{ .Values.disruptionManagement.osdMaintenanceTimeout }}
+    manageMachineDisruptionBudgets: {{ .Values.disruptionManagement.manageMachineDisruptionBudgets }}
+    machineDisruptionBudgetNamespace: {{ .Values.disruptionManagement.machineDisruptionBudgetNamespace }}

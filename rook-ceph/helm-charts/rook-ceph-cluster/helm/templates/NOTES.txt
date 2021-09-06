@@ -1,0 +1,19 @@
+******************************************************************************
+*** PLEASE BE PATIENT: Rook Ceph Cluster may take a few minutes to install ***
+******************************************************************************
+
+Thank you for installing Rook Ceph Cluster!
+
+Your release is named {{ .Release.Name }}. To learn more about the release, try:
+
+  $ helm status {{ .Release.Name }}
+  $ helm get {{ .Release.Name }}
+
+Visit https://rook.io/docs/rook/master for instructions on how to configure Rook clusters
+
+Important Notes:
+- You must customise the 'CephCluster' resource to met your situation.
+- Each CephCluster must be deployed to its own namespace.
+- The helm chart includes all the RBAC required to create a CephCluster CRD in the same namespace.
+- Any disk devices you add to the cluster in the 'CephCluster' must be empty (no filesystem and no partitions).
+- In the 'CephCluster' you must refer to disk devices by their '/dev/something' name, e.g. 'sdb' or 'xvde'.

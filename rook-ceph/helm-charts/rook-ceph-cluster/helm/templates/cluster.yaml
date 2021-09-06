@@ -1,0 +1,79 @@
+apiVersion: ceph.rook.io/v1
+kind: CephCluster
+metadata:
+  name: {{ .Values.cluster.name }}
+  namespace:  {{  .Release.Namespace }}
+spec:
+  cephVersion:
+    image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+    allowUnsupported: {{ .Values.allowUnsupported }}
+  dataDirHostPath: {{ .Values.dataDirHostPath }}
+  skipUpgradeChecks: {{ .Values.skipUpgradeChecks }}
+  continueUpgradeAfterChecksEvenIfNotHealthy: {{ .Values.continueUpgradeAfterChecksEvenIfNotHealthy }}
+  mon:
+    count: {{ .Values.mon.count }}
+    allowMultiplePerNode: {{ .Values.mon.allowMultiplePerNode }}
+  mgr:
+    modules:
+    - name: pg_autoscaler
+      enabled: {{ .Values.mgr.modules.pg_autoscaler.enabled }}
+  dashboard:
+    enabled: {{ .Values.dashboard.enabled }}
+    urlPrefix: {{ .Values.dashboard.urlPrefix }}
+    port: {{ .Values.dashboard.port }}
+    ssl: {{ .Values.dashboard.ssl }}
+  monitoring:
+    enabled: {{ .Values.monitoring.enabled }}
+    rulesNamespace: {{ .Values.monitoring.rulesNamespace }}
+  network:
+  rbdMirroring:
+    workers: {{ .Values.rbdMirroring.workers }}
+  crashCollector:
+    disable: {{ .Values.crashCollector.disable }}
+  cleanupPolicy:
+    deleteDataDirOnHosts: ""
+  annotations:
+  resources:
+  removeOSDsIfOutAndSafeToRemove: {{ .Values.removeOSDsIfOutAndSafeToRemove }}
+  storage:
+    useAllNodes: {{ .Values.storage.useAllNodes }}
+    useAllDevices: {{ .Values.storage.useAllDevices }}
+    {{- if eq .Values.storage.env "dev" }}
+    nodes:
+      - name: "k8s-dev05"
+        devices:
+          - name: "nvme0n1"
+      - name: "k8s-dev06"
+        devices:
+          - name: "nvme1n1"
+      - name: "k8s-dev07"
+        devices:
+          - name: "nvme1n1"
+      - name: "k8s-dev21"
+        devices:
+          - name: "nvme1n1"
+    {{- end }}
+    {{- if eq .Values.storage.env "prod" }}
+    nodes:
+    - name: "k8s-prod-13"
+      devices:
+      - name: "sdb"
+      - name: "sdd"
+    - name: "k8s-prod-14"
+      devices:
+      - name: "sdd"
+      - name: "sde"
+    - name: "k8s-prod-16"
+      devices:
+      - name: "sdb"
+      - name: "sdd"
+    - name: "k8s-prod-19"
+      devices:
+      - name: "sdb"
+      - name: "sdd"
+    {{- end }}
+  disruptionManagement:
+    managePodBudgets: {{ .Values.disruptionManagement.managePodBudgets }}
+    osdMaintenanceTimeout: {{ .Values.disruptionManagement.osdMaintenanceTimeout }}
+    manageMachineDisruptionBudgets: {{ .Values.disruptionManagement.manageMachineDisruptionBudgets }}
+    machineDisruptionBudgetNamespace: {{ .Values.disruptionManagement.machineDisruptionBudgetNamespace }}

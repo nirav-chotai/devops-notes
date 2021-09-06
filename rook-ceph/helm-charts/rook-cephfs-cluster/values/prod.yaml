@@ -1,0 +1,28 @@
+# cluster level storage configuration and selection
+# https://github.com/rook/rook/blob/master/Documentation/ceph-cluster-crd.md#storage-selection-settings
+storage:
+  env: prod
+
+cluster:
+  name: rook-cephfs
+
+dataDirHostPath: /var/lib/rook-cephfs
+
+image:
+  repository: ceph/ceph
+  tag: v15.2.4-20200630
+
+imagePullSecrets:
+  - name: gcr-json-key
+
+dashboard:
+  enabled: true
+  urlPrefix: /cephfs-dashboard
+  port: 8080
+  ssl: false
+
+toolbox:
+  image:
+    repository: rook/ceph
+    tag: v1.4.3
+    imagePullPolicy: IfNotPresent

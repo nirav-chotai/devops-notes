@@ -1,0 +1,4 @@
+# cluster level storage configuration and selection
+# https://github.com/rook/rook/blob/master/Documentation/ceph-cluster-crd.md#storage-selection-settings
+storage:
+  env: dev
