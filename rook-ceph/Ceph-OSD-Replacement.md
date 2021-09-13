@@ -190,6 +190,10 @@ Delete `auth` from the `toolbox`
 ceph auth list
 ceph auth del osd.246
 ```
+Remove it from the Crush Map
+```shell script
+ceph osd crush remove osd.246
+```
 
 Step 6: Remove the OSD from the Ceph cluster
 
@@ -359,5 +363,24 @@ removeOSDsIfOutAndSafeToRemove: true
 setting removeOSDsIfOutAndSafeToRemove is set to true. The default for
 all new or upgraded clusters should be false.
 
-Reference: https://github.com/rook/rook/commit/7f9611d48934d064de5eb3a261d03fcf4bb6b727
+References: 
+- https://github.com/rook/rook/commit/7f9611d48934d064de5eb3a261d03fcf4bb6b727
+- https://gist.github.com/cheethoe/49d9c1d0003e44423e54a060e0b3fbf1
+
+# Remove OSD hosts only when certain
+
+Conditions tested:
+
+- `useAllNodes = true`, cordon node, restart operator - node should not be removed
+- `useAllNodes = false`, cordon node, restart operator - node should not be removed
+- `useAllNodes = false`, remove node from CRD - node should be removed automatically
+- `useAllNodes = false`, stop operator, cordon node A, remove node B from CRD, start operator
+  - node B should be removed but not node A
+  - test operator stop by setting deployment replicas to zero while changes are made
+- `useAllNodes = true`, set taint on node, restart operator - node should be removed
+- `useAllNodes = true`, uncordoning a node results in orchestration and osd node addition
+- `useAllNodes = false`, uncordoning a node results in orchestration but no osd node addition
+- `useAllNodes = false`, adding node to CRD results in osd node addition
+
+Reference: https://github.com/rook/rook/pull/2936
 

@@ -70,6 +70,24 @@ max osd.4 with 42 pgs (1.15464 * mean)
 ```
 
 ```shell script
+[root@rook-ceph-tools-b5765bff4-fprsr /]# ceph osd crush tree
+ID   CLASS  WEIGHT     TYPE NAME                    
+ -1         101.86719  root default                 
+-19          25.46680      host k8s-prod-21 
+ 10    hdd   12.73340          osd.10               
+ 12    hdd   12.73340          osd.12               
+-13          25.46680      host k8s-prod-22 
+  4    hdd   12.73340          osd.4                
+ 14    hdd   12.73340          osd.14               
+-21          25.46680      host k8s-prod-23 
+ 11    hdd   12.73340          osd.11               
+ 13    hdd   12.73340          osd.13               
+-17          25.46680      host k8s-prod-24 
+  9    hdd   12.73340          osd.9                
+ 15    hdd   12.73340          osd.15                         
+```
+
+```shell script
 [root@rook-ceph-tools-b5765bff4-fprsr /]# ceph osd df
 ID  CLASS  WEIGHT    REWEIGHT  SIZE     RAW USE  DATA     OMAP     META     AVAIL    %USE   VAR   PGS  STATUS
 10    hdd  12.73340   1.00000   13 TiB  3.7 TiB  3.7 TiB  5.1 MiB  7.2 GiB  9.1 TiB  28.89  1.17   39      up

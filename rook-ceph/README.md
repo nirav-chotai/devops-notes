@@ -289,3 +289,7 @@ RBD:
 Introduction to Rook: https://www.youtube.com/watch?v=pwVsFHy2EdE
 
 Deep Dive Rook: https://www.youtube.com/watch?v=Mb7oiXQb1ZE
+
+# Rook - Ceph Design Documents
+
+https://github.com/rook/rook/tree/master/design/ceph
